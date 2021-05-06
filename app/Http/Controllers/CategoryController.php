@@ -13,12 +13,12 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = \App\Category::paginate(10);
+        $categories = \App\Kategori::paginate(10);
         
         $filterKeyword = $request->get('name');
 
         if($filterKeyword) {
-            $categories = \App\Category::where("name", "LIKE", "%$filterKeyword%")->paginate(10);
+            $categories = \App\Kategori::where("name", "LIKE", "%$filterKeyword%")->paginate(10);
         }
 
         return view('categories.index', ['categories' => $categories]);
@@ -45,7 +45,7 @@ class CategoryController extends Controller
     {
         $name = $request->get('name');
 
-        $new_category = new \App\Category;
+        $new_category = new \App\Kategori;
         $new_category->name = $name;
 
         if($request->file('image')){
@@ -70,7 +70,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = \App\Category::findOrFail($id);
+        $category = \App\Kategori::findOrFail($id);
 
         return view('categories.show', ['category' => $category]);
     }
@@ -83,7 +83,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category_to_edit = \App\Category::findOrFail($id);
+        $category_to_edit = \App\Kategori::findOrFail($id);
 
         return view('categories.edit', ['category' => $category_to_edit]);
     }
@@ -100,7 +100,7 @@ class CategoryController extends Controller
         $name = $request->get('name');
         $slug = $request->get('slug');
 
-        $category = \App\Category::findOrFail($id);
+        $category = \App\Kategori::findOrFail($id);
 
         $category->name = $name;
         $category->slug = $slug;
@@ -131,7 +131,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = \App\Category::findOrFail($id);
+        $category = \App\Kategori::findOrFail($id);
 
         $category->delete();
 
@@ -140,14 +140,14 @@ class CategoryController extends Controller
 
     public function trash(){
 
-        $deleted_category = \App\Category::onlyTrashed()->paginate(10);
+        $deleted_category = \App\Kategori::onlyTrashed()->paginate(10);
 
         return view('categories.trash', ['categories' => $deleted_category]);
 
     }
 
     public function restore($id) {
-        $category = \App\Category::withTrashed()->findOrFail($id);
+        $category = \App\Kategori::withTrashed()->findOrFail($id);
 
         if($category->trashed()){
             $category->restore();
@@ -159,7 +159,7 @@ class CategoryController extends Controller
     }
 
     public function deletePermanent($id){
-        $category = \App\Category::withTrashed()->findOrFail($id);
+        $category = \App\Kategori::withTrashed()->findOrFail($id);
 
         if(!$category->trashed()){
             return redirect()->route('categories.index')->with('status', 'Can not delete permanent active category');
@@ -173,7 +173,7 @@ class CategoryController extends Controller
     public function ajaxSearch(Request $request){
         $keyword = $request->get('q');
 
-        $categories = \App\Category::where("name", "LIKE", "%$keyword%")->get();
+        $categories = \App\Kategori::where("name", "LIKE", "%$keyword%")->get();
 
         return $categories;
     }

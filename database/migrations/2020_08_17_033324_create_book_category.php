@@ -13,7 +13,7 @@ class CreateBookCategory extends Migration
      */
     public function up()
     {
-        Schema::create('kategori_buku', function (Blueprint $table) {
+        Schema::create('buku_kategori', function (Blueprint $table) {
             $table->id();
             $table->integer('book_id')->unsigned()->nullable();
             $table->integer('category_id')->unsigned()->nullable();
@@ -31,6 +31,6 @@ class CreateBookCategory extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kategori_buku');
+        Schema::dropIfExists('buku_kategori');
     }
 }

@@ -3,9 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class kategori extends Model
+class Kategori extends Model
 {
+    use SoftDeletes;
+
     protected $table = "kategori";
-    
+
+    public function books(){
+        return $this->belongToMany('App\Buku');
+    }
 }
