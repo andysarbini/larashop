@@ -13,12 +13,12 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = \App\Kategori::paginate(10);
+        $categories = \App\Category::paginate(10);
         
         $filterKeyword = $request->get('name');
 
         if($filterKeyword) {
-            $categories = \App\Kategori::where("name", "LIKE", "%$filterKeyword%")->paginate(10);
+            $categories = \App\Category::where("name", "LIKE", "%$filterKeyword%")->paginate(10);
         }
 
         return view('categories.index', ['categories' => $categories]);
@@ -43,9 +43,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        \Validator::make($request->all(),[
+            "name" => "required|min:3|max:20",
+            "image" => "required"
+        ])->validate();
+
         $name = $request->get('name');
 
-        $new_category = new \App\Kategori;
+        $new_category = new \App\Category;
         $new_category->name = $name;
 
         if($request->file('image')){
@@ -97,10 +102,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $category = \App\Category::findOrFail($id);
+
+        \Validator::make($request->all(), [
+            "name" => "required|min:3|max:20",
+            "image" => "required",
+            "slug" => [
+                "required",
+                Rule::unique("categories")->ignore($category->slug, "slug")
+            ]
+        ])->validate();
+        
         $name = $request->get('name');
         $slug = $request->get('slug');
-
-        $category = \App\Kategori::findOrFail($id);
 
         $category->name = $name;
         $category->slug = $slug;

@@ -15,5 +15,10 @@ class Buku extends Model
         return $this->belongsToMany('App\Kategori');
     
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany('App\Order');
+    }
 }
 
