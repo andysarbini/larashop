@@ -170,7 +170,7 @@ class CategoryController extends Controller
     }
 
     public function restore($id) {
-        $category = \App\Kategori::withTrashed()->findOrFail($id);
+        $category = \App\Category::withTrashed()->findOrFail($id);
 
         if($category->trashed()){
             $category->restore();
@@ -182,7 +182,7 @@ class CategoryController extends Controller
     }
 
     public function deletePermanent($id){
-        $category = \App\Kategori::withTrashed()->findOrFail($id);
+        $category = \App\Category::withTrashed()->findOrFail($id);
 
         if(!$category->trashed()){
             return redirect()->route('categories.index')->with('status', 'Can not delete permanent active category');
@@ -196,7 +196,7 @@ class CategoryController extends Controller
     public function ajaxSearch(Request $request){
         $keyword = $request->get('q');
 
-        $categories = \App\Kategori::where("name", "LIKE", "%$keyword%")->get();
+        $categories = \App\Category::where("name", "LIKE", "%$keyword%")->get();
 
         return $categories;
     }

@@ -28,12 +28,12 @@ class BookController extends Controller
         $keyword = $request->get('keyword') ? $request->get('keyword') : '';
 
         if($status) {            
-            $books = \App\Buku::with('categories')->where('title', "LIKE", "%$keyword%")->where('status', strtoupper($status))->paginate(10);            
+            $books = \App\Book::with('categories')->where('title', "LIKE", "%$keyword%")->where('status', strtoupper($status))->paginate(10);            
         }
         else
         {
             
-            $books = \App\Buku::with('categories')->where("title", "LIKE", "%$keyword%")->paginate(10);
+            $books = \App\Book::with('categories')->where("title", "LIKE", "%$keyword%")->paginate(10);
         }
 
         return view('books.index', ['books'=>$books]);
@@ -60,7 +60,7 @@ class BookController extends Controller
     {
         \Validator::make($request->all(), [
             "title" => "required|min:5|max:200",
-            "desription" => "required|min:20|max:1000",
+            "description" => "required|min:20|max:1000",
             "author" => "required|min:3|max:100",
             "publisher" => "required|min:3|max:200",
             "price" => "required|digits_between:0,10",
@@ -119,7 +119,7 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $book = \App\Buku::findOrFail($id);
+        $book = \App\Book::findOrFail($id);
         return view('books.edit', ['book' => $book]);
     }
 
@@ -181,7 +181,7 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $book = \App\Buku::findOrFail($id);
+        $book = \App\Book::findOrFail($id);
         $book->delete();
 
         return redirect()->route('books.index')->with('status', 'Book moved to trash');
@@ -189,13 +189,13 @@ class BookController extends Controller
 
     public function trash()
     {
-        $books = \App\Buku::onlyTrashed()->paginate(10);
+        $books = \App\Book::onlyTrashed()->paginate(10);
         return view('books.trash', ['books' => $books]);
     }
 
     public function restore()
     {
-        $book = \App\Buku::withTrashed()->findOrFail($id);
+        $book = \App\Book::withTrashed()->findOrFail($id);
 
         if($book->trashed()) {
             $book->restore();
@@ -209,7 +209,7 @@ class BookController extends Controller
 
     public function deletePermanent($id)
     {
-        $book = \App\Buku::withTrashed()->findOrFail($id);
+        $book = \App\Book::withTrashed()->findOrFail($id);
 
         if (!$book->trashed())
         {

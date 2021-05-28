@@ -41,11 +41,12 @@
                 <textarea name="description" 
                     id="description"
                     class="form-control {{$errors->first('description') ? "is-invalid" : ""}}"
-                    placeholder="Give a descrition about this book" cols="30" rows="10">
-                    {{old('description')}}</textarea>
-                    <div class="invalid-feedback">
-                        {{$errors->first('description')}}
-                    </div>
+                    placeholder="Give a description about this book">
+                    {{old('description')}}
+                </textarea>
+                <div class="invalid-feedback">
+                    {{$errors->first('description')}}
+                </div>
                 <br>
 
             <label for="categories">Categories</label><br>
@@ -62,7 +63,7 @@
                 id="stock"
                 name="stock"
                 min=0
-                value="{{old('stock')}}"
+                
                 value=0>
                 <div class="invalid-feedback">
                     {{$errors->first('stock')}}
@@ -71,7 +72,7 @@
 
             <label for="author">Author</label><br>
                 <input 
-                    value={{old('author')}}" type="text"
+                    value="{{old('author')}}" type="text"
                     class="form-control {{$errors->first('author') ? "is-invalid" : ""}}"
                     name="author"
                     id="author"
